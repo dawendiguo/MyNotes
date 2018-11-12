@@ -1,0 +1,29 @@
+github 笔记
+一.设置本地ssh连接github
+1.设置本地邮箱和用户{
+	<code>git config --global user.name "nameVal"</code>
+	<code>2. git config --global user.email "eamil@qq.com"</code>
+}
+2.创建SSH Key{
+	<code>ssh-keygen -t rsa -C ‘email@example.com’</code>
+}
+3.添加SSH Key 到github
+4.测试{ <code>ssh -T git@github.com</code> }
+二.上传本地文件到github
+1.github上建立远程仓库：(fileName)
+2.本地新建文件夹(fileName)
+3.打开(fileName)初始化git项目{
+	<code>git init</code>
+}
+4.添加本地文件{
+	<code>git add *</code>
+}
+5.提交到本地分支{
+	<code>git commit -m 'change describe'</code>
+}
+6.本地项目中加入远程仓库{
+	<code>git remote add 远程分支名  git@github.com:YouName/fileName.git </code>
+}
+7.上传到远程服务器{
+	git push master 远程分支名
+}

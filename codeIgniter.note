@@ -1,0 +1,28 @@
+codeIgniter	笔记
+1.安装{
+	<code>composer create-project codeigniter/framework ProjectName</code>
+	}
+2.改base_url[
+	<code>vi ProjectName/application/config/config.php</code>
+	找到$config['base_url']=字段加上ip地址
+}
+3.写.htaccess文件{
+	写入下面内容：禁止访问一些目录(system,application,vendor)
+	<IfModule authz_core_module>
+		 Require all denied
+	</IfModule>
+	<IfModule !authz_core_module>
+		 Deny from all
+	</IfModule>
+}
+4.隐藏index.php{
+	ProjectName 文件夹下加入.htaccess.内容如下：
+	RewriteEngine On
+	RewriteBase /ProjectName/
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ index.php?/$1 [L]
+
+	设置config/config.php
+	$config[index_page]=""		//设为空
+}

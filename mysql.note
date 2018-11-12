@@ -1,0 +1,67 @@
+maridb 笔记
+一.重置root密码
+1. 停用mariadb{
+	<code>systemctl stop mariadb.service</code>
+}
+2. 安全模式启动mariadb{
+	<code>mysqld_safe --skip-grant-tables & </code>
+}
+3. root登录{
+	<code>mysql -u root -p</code>
+	直接按enter,进入.
+}
+4. 找到对应数据库{
+	<code>user mysql;</code>
+}
+5. 更新root密码{
+	<code>
+	update user set password=PASSWORD('newPassword) where user='root';
+	</code>
+}
+6. 刷新设置{
+	<code>
+	flush privileges;
+	</code>
+}
+7. 退出mysql{
+	<code>
+	exit
+	</code>
+}
+8. 重启mariadb{
+	<code>
+	systemctl restart mariadb.service
+	</code>
+}
+二. 新建数据库并授权
+1. 新建数据库{
+	<code>
+	create database|schema databaseName default character set utf8 collate(比较字符集) utf8_general_ci
+	</code>
+}
+2. 授权一个数据库给指定用户{
+	<code>
+		grant privileges on databaseName.* to 'userName'@'localhost';
+	</code>
+	privileges 权限说明：
+	all,select,insert,create,update,delete,drop.
+}
+3. 察看用户权限{
+	show grants for 'userName'@'localhost';
+}
+三. 新建table,插入数据
+1.建立 table{
+	<code>
+	create table tableName(id int primary key not null auto_increment,name char(20) not null);
+	</code>
+}
+2. 插入数据{
+	<code>
+		insert into tableName(id,name)values(0,'name1'),(1,'name2');
+	</code>
+}
+3. 察看table明细{
+	<code>
+		describe tableName;
+	</code>
+}
