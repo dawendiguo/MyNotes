@@ -1,0 +1,37 @@
+一.滚动用到的方法
+1.clientHeight
+	可视区域高度，不含边框。
+2.offsetHeight
+	可视高度，含边框。
+3.scrollHeight
+	滚动最大高度。
+4.dom.scrollTop()返回当前滚动值(0-scrollHeight)
+5.判断是否到底部
+	scrollHeight == dom.scrollHeight + clientHeight;
+
+
+二.JSON对于不同数组的表现
+1.关联数组
+	(1).php代码
+		<code>
+				$arr = array('name'=>'name1',
+										'filed'=>'filed1');
+			  $str = json_decode($arr);
+				echo $str;
+		</code>
+  (2).javascript 获取内容
+		<code>
+			$.get(url,
+					function(result){
+						var data = JSON.parse(result);
+						//获取方式,转化成JSON后是对象不是数组
+						alert(data.name);
+					});
+		</code>
+2.索引数组
+	(1).php代码
+		<code>
+			$arr = array('dawen','dawen1','dawen2','dawen3');
+			$str = json_decode($arr);
+			echo $str;
+		</code>
