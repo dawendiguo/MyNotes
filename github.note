@@ -27,3 +27,6 @@ github 笔记
 7.上传到远程服务器{
 	git push master 远程分支名
 }
+
+三.github忽略文件，不上传一些文件
+	项目下加入.gitignore文件里面加入不想上传的文件

@@ -4,7 +4,7 @@
 2.offsetHeight
 	可视高度，含边框。
 3.scrollHeight
-	滚动最大高度。
+	滚动最大高度。对于body和dom对象高度计算也是不同的.位置不同，获取同一个元素结果也不相同。
 4.dom.scrollTop()返回当前滚动值(0-scrollHeight)
 5.判断是否到底部
 	scrollHeight == dom.scrollHeight + clientHeight;
@@ -16,7 +16,7 @@
 		<code>
 				$arr = array('name'=>'name1',
 										'filed'=>'filed1');
-			  $str = json_decode($arr);
+			  $str = json_encode($arr);
 				echo $str;
 		</code>
   (2).javascript 获取内容
@@ -32,6 +32,29 @@
 	(1).php代码
 		<code>
 			$arr = array('dawen','dawen1','dawen2','dawen3');
-			$str = json_decode($arr);
+			$str = json_encode($arr);
 			echo $str;
 		</code>
+ 	(2).javascript 获取内容
+		<code>
+			$.post(url,
+						data,
+						function(result){
+							var data = JSON.parse(result);
+							//获取方式,转化成JSON后以数组方式访问而不是对象
+							alert(data[index]);
+						});
+		</code>
+
+三.input元素类型为number时获取的value不是数字，而是字符串需要转化，转化函数:parseInt(val);
+
+四.flex 显示
+	<code>
+		<style>
+			domParent{
+				display:flex;
+				flex-direction:row|column;
+				justify-
+			}
+		</style>
+	</code>
