@@ -53,8 +53,55 @@
 		<style>
 			domParent{
 				display:flex;
-				flex-direction:row|column;
-				justify-
+				flex-direction:row|column;			//主轴定义
+				justify-content:flex-start|center|flex-end  //主轴方向对齐
+				align-items:同上			//垂直方向定义
+				flex-wrap:nowrap|wrap|wrapreverse
+				flex-flow:flex-direction,flex-wrap;(联合属性)	
+			}
+
+			childDom{
+				order:number		//排列顺序，数字小越靠前可以为负数
+				flex-grow:大于等于0 	//放大比例，父元素有空余空间时才有用，数字越大放大越厉害
+				flex-shrink:大于等于0	 //缩小比例，父元素空间不够时才会起到作用，数字大挤压越厉害
+				flex-basic:<length>|auto	元素宽度，如设置直接取代width设置。
+				flex:flex-grow flex-shrink flex-basic (复合属性);
+				align-self:区别父元素的对齐方式
 			}
 		</style>
 	</code>
+	2.javascript 隐藏显示 flex元素
+		<code>
+			$('dom').css('display','none');		//隐藏元素
+			$('dom').css('display','flex');		//显示元素
+		</code>
+五.自定义字体
+	<code>
+		@font-face{
+			font-family:"字体名";
+			src:url(字体文件位置);
+		}
+
+		dom{
+			font-family:"字体名";
+		}
+	</code>
+六.javascript字体大小设置
+	设置字体大小有二个项目要设置font-size,line-height;
+	javascript获取font-size,line-height
+	<code>
+		var cssFontSize=$(dom).css('font-size');
+		var cssLineHeight$(dom).css('line-height');
+	</code>
+	(1).font-size获取的内容带有单位px,而且是float字符串，要用parseFloat()转化为float型，才能进行运算.
+	(2).line-height可以在css文件中设置。若没有设置则显示nomal。不像font-size那样显示长度单位。
+	<code>
+		var fontSize = parseFloat(cssFontSize);
+		var lineHeight = parseFloat(cssLineHeight);
+	</code>
+	（3）.设置字体大小必须要两个因素都一起考虑,不然会有bug。比如font-size设置不管用，越减越大之类。
+	<code>
+		$(dom).css('font-size',newFontSize);
+		$(dom).css('line-height',newLineHeight);
+	</code>
+七.BUG 	php文件每次js代码要写在主php文件中，如果写入引用的js文件不能有效获取，不能起做用，可能的缓存的关系。但写入php后，再复制到外部js文件就不会有这样的问题了。
