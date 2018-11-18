@@ -65,3 +65,29 @@ maridb 笔记
 		describe tableName;
 	</code>
 }
+
+四.选取文件中某列中最大或最小的几个数据
+	<code>
+		select *|columnName from tableName where condition order by columnName desc|asc limit Number;
+	</code>
+
+	其中desc表示降序排列，即选出最大的几个。
+	asc表示升序排列，选出最小的几个。
+五.联合多个表查询
+	表名｜字段
+	Book |	id  name cover type introduce;
+	BookCount |  id book_id	scan_num coll_num fav_num;
+
+	现取出浏览数最多的3本书的书名和封面
+  <code>
+		SELECT a.name,a.cover FROM Book a INNER JOIN BookCount b on|where a.id = b.book_id order by b.scan_num desc limit 3;
+	</code>
+	另一个不用inner join 的方法
+	<code>
+		SELECT Book.name,Book.cover FROM Book,BookCount where Book.id=BookCount.book_id order by BookCount.scan_num desc limit 3;
+	</code>
+	另可引出删除多个表中数据的方法
+	<code>
+		delete Book,BookCount from Book,BookCount where Book.id = BookCount.book_id AND Book.id = 12;
+	</code>
+	此方法可删除BOOK.id = 12 的书箱的Book和BookCount表中的数据，如只想删除BookCount或Book中的数据可以在delete后只加入一个表名，就只会删除一个表中数据。
