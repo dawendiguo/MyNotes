@@ -105,3 +105,13 @@
 		$(dom).css('line-height',newLineHeight);
 	</code>
 七.BUG 	php文件每次js代码要写在主php文件中，如果写入引用的js文件不能有效获取，不能起做用，可能的缓存的关系。但写入php后，再复制到外部js文件就不会有这样的问题了。
+八.input标签类型为radio的选取问题
+	<code>
+		<input id="" type="radio" name="test">
+		<script>
+				$('input:radio[name=test]:checked').val();	//获取选中项目值,此值为一个字符串变量只能转换类型后做运算
+				$('input:radio[name=test]').eq(index).attr('checked',true);		//设置下标为index的项目为选中状态，index以0计数到最后一个项目，类似数组下标
+				$('input:radio[name=test]').eq(index).attr('checked',false);		//不再选取某项元素，选取其他项目切记取消当前项目选择否则不能再次选取。important
+				$('input:radio[name=test]').eq(index).attr('disable',disable|false);			//启用|禁用一项或多项|全部项目
+		</script>
+	</code>

@@ -1,0 +1,95 @@
+一.隐藏原本radio元素的小圆圈
+	1.样式
+		<code>	
+			<style>
+            input[type='radio'] + label::after{   //由于最后会隐藏radio原本圆圈，所以加上一个label标签。其中＋号表示一起使用才会生效
+            content:"\a0";				//不换行空格，用于隔开几个radio
+            display:inline-block;			//小时方式，important.设置不正确形状不对。
+            vertical-align:middle;   //垂直方向位置
+            font-size:18px;				//大小
+            width:1em;
+            height:1em;
+            margin-right:.2em;
+            border-radius:50%;  //圆形
+            border:1px solid black;
+            text-index:.15em;
+            padding:.1em;
+            line-height:1;
+            }
+            input[type='radio']:checked + label::after{			//选中后背景
+                background-color:black;
+                background-clip:content;		//	背景区域
+                padding:.2em;
+            }
+            input[type='radio']{					//隐藏原有圆圈
+                position:absolute;
+                clip:rect(0px,0px,0px,0px);
+            }
+			</style>
+
+			<body>
+        <input id ='0' type="radio" name='test' value='0' /><label for="0"></label>
+        <input ud='1' type="radio" name='test' value='1'/><label for="1"></label>
+        <input id='2' type="radio" name='test' value='2'/><label for="2"></label>
+        <input id='3' type="radio" name='test' value='3'/><label for="3"></label>
+        <input id = '4' type="radio" name='test' value='4'/><label for="4"></label>
+        <input id='5' type="radio" name='test' value='5'/><label for="5"></label>				//label标签for属性找input:radio的id属性。只有设置了label的for属性才能点击标签选择input:radio，否则不能选取。
+			</body>
+
+<script>
+    /*var ob = document.getElementsByName('test');
+    $("input[type='radio']").change(function(){
+    for(i=0;i<ob.length;i++)
+    if(ob[i].checked)
+        alert(ob[i].value);
+    });
+    */
+    //var pic = ["first","second","third","fourth","fivth","sixith"];
+    var pic = new Array("first","second","third","fourth","fivth","sixth");
+		//当前选中项
+    var current = 0;
+		//radio值改变调用方法
+    $("input:radio[name=test]").change(function(){
+        changeText();
+        var cur = $('input:radio[name=test]:checked').val();
+        current = parseInt(cur);
+        change();
+    });
+		//每个一定时间调用改变
+    setInterval('change();',3000);
+
+    //changeText();
+    change();
+		//改变相关内容
+    function changeText(){
+        var value=$('input:radio[name=test]:checked').val();
+        value = parseInt(value);
+        $('#result').val(pic[value]);
+    }
+
+//改变函数，选取下一个选项
+    function change(){
+			//获取当前选项值
+      var curr = $('input:radio[name=test]:checked').val();
+				//无选中项目
+        if(curr == undefined)
+            current = 0;
+			 //转换为整数，可进行加减
+        current = parseInt(current);
+				//radio全设为非checked 状态
+        $('input:radio[name=test]').prop('checked',false);
+				//设置当前选中状态
+         $('input:radio[name=test]').eq(current).prop('checked',true);
+       changeText();
+			 //没有到最后个
+        if(parseInt(current) < 5){
+        current = parseInt(current) + 1;
+        }
+				//到最后一个
+        else{
+        current = 0;
+        }
+    //    $("input:radio[name='test']").eq(current).prop('checked',false);
+    }
+</script>
+		</code>

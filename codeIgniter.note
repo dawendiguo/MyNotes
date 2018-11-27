@@ -26,3 +26,26 @@ codeIgniter	笔记
 	设置config/config.php
 	$config[index_page]=""		//设为空
 }
+二.设置cookie,访问cookie
+1.载入cookie
+	<code>
+			$this->load->helper('cookie');
+	</code>
+2.设置cookie
+	<code>
+		$this->input->set_cookie('cookieName',value,outTime);
+		//outTime 以秒为单位
+	</code>
+3.获取cookie
+	<code>
+		$name = $this->input->cookie('cookieName');
+	</code>
+三.设置获取session
+	1.初始化session
+		<code>$this->load->library('session');</code>
+	2.设置session 
+		(1). <code>$_SESSION['name'] = value;</code>
+		(2). <code>$this->session->name = value;</code>
+	3.获取session
+		(1). <code>$var = $_SESSION['name'];</code>
+		(2). <code>$var = $this->session->name ;</code>
