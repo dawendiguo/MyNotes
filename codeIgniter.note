@@ -41,6 +41,7 @@ codeIgniter	笔记
 		$name = $this->input->cookie('cookieName');
 	</code>
 三.设置获取session
+	<important>确认用户有写入session 的权利。可以用session_start() 确认session保存问题。</important>
 	1.初始化session
 		<code>$this->load->library('session');</code>
 	2.设置session 

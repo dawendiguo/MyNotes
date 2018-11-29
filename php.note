@@ -1,0 +1,33 @@
+一.命令行运行php脚本
+1.编写phpscript要点
+	test.php内容:
+	<code>
+		#!/bin/php			//php 命令位置
+		<?php						//php标记，必要
+			echo "get var: ".$argc."\n";		//参数个数
+			echo $argv[0]."\n";							//第一个参数
+			echo $argv[1]."\n";							//第二个参数
+			echo $argv[2]."\n";
+		?>
+	</code>
+	一个bug,在script下 ' 和 " 不同。最好都用双引号，单引号会有bug。
+
+二.遍历文件夹
+	<code>
+		function dirScan($dir){
+			//打开文件夹
+		  $currentDir = opendir($dir);
+			//遍历文件下面的文件
+			while(($file = readdir($dir)) !== false){
+			//文件名是为.和..
+			if($file == "." || $file == "..")
+				continue;
+			//是文件夹
+			else if(is_dir($dir."/".$file)
+				dirScan($dir."/".$file);
+			//是文件
+			else
+				echo $dir."/".$file."是文件";
+			}
+		}
+	</code>
