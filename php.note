@@ -31,3 +31,13 @@
 			}
 		}
 	</code>
+三.正则匹配中文
+	直接输入中文匹配但中文占两个字符所以不能用[一二]的形式匹配一或者二。需以(一|二) 的形式匹配。
+	指定匹配关键字的方式:?P<key>。
+	<code>
+		$str = '第一章 傻逼的养成';
+		$str2 = '第三张   傻逼的日常';			//提取出其中的章节号和标题
+		preg_match('/第(?P<chapter>.*)(章|张|回)(?P<title>.*)/g',$str,$match);
+		$chapter = $match[chapter];
+		$title = $match[title];
+	</code>

@@ -91,3 +91,8 @@ maridb 笔记
 		delete Book,BookCount from Book,BookCount where Book.id = BookCount.book_id AND Book.id = 12;
 	</code>
 	此方法可删除BOOK.id = 12 的书箱的Book和BookCount表中的数据，如只想删除BookCount或Book中的数据可以在delete后只加入一个表名，就只会删除一个表中数据。
+六.mariadb开启错误
+	<error>  Process: 8257 ExecStart=/usr/bin/mysqld_safe --basedir=/usr (code=exited, status=1/FAILURE)
+	</error>
+	原因删除了/var/log/下面的mariadb文件夹.
+	在/var/log/下面建立mariadb文件夹就可以了.
