@@ -1,0 +1,15 @@
+一.mail命令使用
+	p 显示当前邮件
+	d 删除当前邮件
+	z 列出最后20条邮件
+	h 显示当前邮件列表
+	f 显示当前邮件简易信息
+	t 阅读邮件
+二.配置smtp，发送邮件
+	修改/etc/mail.rc
+	<code>
+		set from=youMailAddress smtp=smtpAddress(smtp.163.com|smtp.qq.com)
+		set smtp-auth-user=youMailAddress smtp-auth-password=youPassword
+		set smtp-auth=login
+	</code>
+  配置完成就可以使用mail命令发送邮件了。而且是用配置的服务器
