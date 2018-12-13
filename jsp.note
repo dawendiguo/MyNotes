@@ -1,0 +1,17 @@
+一.jsp中加载数据库注意事项
+	tomcat项目中必须包含驱动文件。位置/youAPP/WEB_INF/lib/
+	tomcat中的外部外部javaBean位置/youApp/WEB_INF/classes/
+
+	其中必须有一个包名和一个类名
+	<code>
+		package pName;
+		class cName{
+		}
+	</code>
+	引入这个javaBean就必须有/youApp/WEB_INF/class/pName/cName.class 文件存在。
+	引入
+	<code>
+			<%@page import="pName.cName">			//只是引入不是实例化
+			<jsp:include id="c" class="pName.cName" %>	//相当于import pName.cName;  而且cName c = new cName();  接下来可以直接使用c访问内部数据和函数
+			<%@page import="java.sql.*"%>		//载入/lib下的类库中的类，也可以用于载入javaBean
+	</code>

@@ -1,0 +1,46 @@
+一.tomcat安装
+	（1）.yum安装
+		<code>
+			yum install -y tomcat
+		</code>
+	 (2).tomcat目录结构
+	 	/usr/share/tomcat	用户添加web应用的地方实际指向/var/lib/tomcat/webapps/
+		/usr/share/java/tomcat/ 下面是tomcat用到的库文件此文件会用于javac , java其中servlet-api.jar很重要，必须加入$CLASSPATH不然可能会出现不能找到javax.servlet.*
+		(3)./etc/sysconfig/tomcat tomcat设定文件
+		(4).安装管理包 tomcat-webapps tomcat-admin-webapps
+		<code>
+			yum install tomcat-webapps tomcat-admin-webapps
+		</code>
+		这两个文件用于在webapps下增加一些文件ROOT，examples，sample，manager和host-manager
+		(5).开启tomcat 
+			<code>
+				systemctl start tomcat 	//开启
+				systemctl enable tomcat //开机默认启动
+			</code>
+		(6).还可以安装在线文档
+			<code>
+				yum install tomcat-docs-webapp tomcat-javadoc
+			</code>
+二.javac 找不到javax.servlet.*
+	要定义好$CLASSPATH.中要加入servlet-api.jar。此文件是tomcat/lib/的文件。此文件还可以放入$JAVA_HOME/jre/lib或$JAVA_HOME/jre/lib/ext/下。
+	$TOMCAT_HOME也指定好。
+三.改写rm命令防止误删
+	.bashrc加入：
+	<code>
+		mkdir -p ~/.trash
+		alias rm=trash
+		alias r=trash
+		alias rl='ls ~/.trash'
+		alias ur=undelfile
+		alias rmdup=cleartrash
+		undelfile(){
+    mv -i ~/.trash/$@   ./
+}
+trash(){
+    mv  $@   ~/.trash/
+}
+cleartrash(){
+    read -p "clear sure?[n]" confirm
+    [ $confirm == "y" ]||[ $confirm == "Y" ] && /usr/bin/rm -rf ~/.trash/*
+}
+	</code>
