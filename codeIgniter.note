@@ -50,3 +50,4 @@ codeIgniter	笔记
 	3.获取session
 		(1). <code>$var = $_SESSION['name'];</code>
 		(2). <code>$var = $this->session->name ;</code>
+四.特点：简单mvc入门，上手快，规矩少。完全改写类定义。特别是需要类和对象概念时问题多。没有new关键字是最大败笔，构造函数调用成问题，对象概念模糊，全成了静态方法。对于大型应用直接说No。
