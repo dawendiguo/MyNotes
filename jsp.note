@@ -15,3 +15,108 @@
 			<jsp:include id="c" class="pName.cName" %>	//相当于import pName.cName;  而且cName c = new cName();  接下来可以直接使用c访问内部数据和函数
 			<%@page import="java.sql.*"%>		//载入/lib下的类库中的类，也可以用于载入javaBean
 	</code>
+二.jsp用jdbc连接数据库
+	<code>
+		import java.sql.*;
+
+		//数据库连接
+		Connection conn = null;
+		//操作量
+		Statement stms;
+		//记录集
+		ResultSet rs = null;
+		//驱动器
+		String driver = "com.mysql.jdbc.Driver";
+		//用户名
+		String user = "You User Name";
+		//密码
+		String password = "You password";
+		//数据库
+		String db = "You Database";
+
+		try{
+			//加载驱动
+			Class.forName(driver);
+			//建立连接，localhost不能用就用127.0.0.1
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:1433;DataName="+db,user,password);
+			if(!conn.isClosed())
+				System.out.println("successed connection to Database!");
+			//这是可以设置获取数据显示方式
+		  stms = conn.createStatement();
+		}catch(java.lang.ClassNotFoundException e){
+			System.out.println("faq():"+e.toString() + e.getMessage());
+		}catch(Exception e){
+			System.out.println("faq():"+e.toString() + e.getMessage());
+		}
+			//执行sql语句
+			rs = stms.executeQuery(sql语句);
+	</code>
+三.javac 编译带包的程序
+	新建一个包文件夹packageName,里面建立多个类，文件夹里面的类必须同事属于这个包。编译和运行都要在这个文件夹之外，不然回存在找不到类文件的情况。
+	<code>
+	#str1.java
+	package packageName;
+	protected class str1{
+		public String getstr1(){
+			return "from str1";
+	 }
+ }
+	#str2.java
+	package packageName;
+	protected class str2{
+		public String getstr2(){
+			str1 s = new str1();
+			return (s.getstr1() + "from str2");
+	 }
+ }
+ #main.java
+ package packageName;
+ protected class main{
+ 	public staitc void main(String[] argv){
+		str2 s = new str2();
+		System.out.println(s.getstr2());
+	}
+}
+	</code>
+(2).以上三个文件同时位于packageName文件夹下。用javac  编译的时候只能在packageName的那个级目录而不能进入packageName目录进行编译。否则会存在找不到类文件的错误。
+	<code>
+		javac packageName/main.java
+	</code>
+三.servlet和jsp跳转
+	(1).servlet跳转
+  <code>
+		  RequestDispatcher rd = getServletContext().getRequestDispatcher("/student.jsp");
+			rd.forward(req,res);
+	</code>
+	括号里面的页面要以'/'开头。
+	（2).servlet跳转2
+		<code>
+			response.sendRedirect("/a.jsp");
+		</code>
+	括号里也要以'/'开头。
+	 （3).jsp跳转
+	 	<code>
+			response.sendRedirect("/a.jsp");
+		</code>
+		(4).jsp跳转2
+		<code>	
+			<jsp:forward page"/a.jsp"></jsp:forward>
+		</code>
+		(5).jsp跳转3
+		<code>
+			response.setHeader("Location","/a.jsp");
+		</code>
+四.servlet使用session
+	(1).使用session，必须要先建立session对象
+		<code>
+			HttpSession session = request.getSession(true);
+		</code>
+	(2).设置session值
+		<code>
+			session.setAttribute("name","value");
+		</code>
+	(3).获取session值
+		<code>
+			session.getAttribute("name");
+		</code>
+SESSION是用户登陆的好用工具

@@ -96,3 +96,35 @@ maridb 笔记
 	</error>
 	原因删除了/var/log/下面的mariadb文件夹.
 	在/var/log/下面建立mariadb文件夹就可以了.
+五.ResultSet的数据取出必须用try--catch语句
+	<code>
+		ResultSet rs = db.function();
+		try{
+			while(rs.next())
+				rs.getString('columns'); 或 rs.getInt('columns');
+	  }catch(SQLException e){
+			e.getMessage();
+		}
+	</code>
+六.sql语句获取列和
+	<code>
+		select sum(column) from table where condition;
+		select count(column) from table where condition;
+	</code>
+七.sql中的不等于
+	<code>
+		select * from tableName where id not in(1,2,3);
+		//括号里面也可以是sql查询语句,可以形成嵌套
+		select * from tableName where id not in(select some_id from otherTable);
+	</code>
+八.sql联合查找中两个字段相同时，jdbc怎么获取两个字段值
+	<code>
+		table1 columns:
+		id name password
+		table2 columns:
+		id name year age
+		现想获取两个表中名字相同的id.
+		select table1.id,table2.id,tabel1.name  from table1,table2 where table1.name = table2,name;
+	</code>
+		用jdbc的getString或getInt只能获取第一个id,也就是table1.id，如果想获取table2.id就不能用getString("id")了而是要用getString(2)。
+		结论：getString和getInt两个函数不只能用列名做参数，而且能用数字作为参数。但数字必须和sql语句的顺序相关。
