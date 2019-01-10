@@ -3,3 +3,101 @@
 	(1).下载文件,选择二进制文件下载。官网第二项是linux版本。
 	(2).文件解压。解压文件设为MAVEN_HOME。$MAVEN_HOME/bin加入$PATH。下面有maven用到的脚本文件。
 (二).开始使用，自创建项目。
+(三).maven中的web怎么用jetty插件运行
+	修改pom.xml
+	<code>
+		<build>
+		        <pluginManagement>
+		                <plugins>
+											<plugin>
+											        <groupId>org.mortbay.jetty</groupId>
+											        <artifactId>maven-jetty-plugin</artifactId>
+											</plugin>
+										</plugins>
+		        </pluginManagement>
+		</build>
+	</code>
+	以上设置加入jetty插件。默认port是8080.
+	可以用以下两种方法更改port。
+	（1）.mvn 运行时用以下命令
+			<code>
+				mvn -Djetty.port=8089 jetty:run
+			</code>
+	 (2).同样更改pom.xml
+	 		<code>
+					<plugin>
+					        <groupId>org.mortbay.jetty</groupId>
+					        <artifactId>maven-jetty-plugin</artifactId>
+					        <configuration>
+					                <connectors>
+					                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+					                                <port>8089</port>
+					                        </connector>
+					                </connectors>
+					        </configuration>
+					</plugin>
+			</code>
+		方法2要麻烦些，要指定connector的属性，没有指定则不能用这个connector，还是会以8080开启。
+		另还有个tomcat插件，但不知道是tomcat插件版本还是什么原因，不能正常使用。
+四.打包可以运行jar包，包括依赖和配置文件
+	pom.xml:
+	<code>
+  <build>
+	<!--打包插件-->
+          <plugins>
+                  <plugin>
+                          <groupId>org.apache.maven.plugins</groupId>
+                          <artifactId>maven-jar-plugin</artifactId>
+                          <configuration>
+																	<!--档案文件-->
+                                  <archive>
+																			    <!--清单-->
+                                          <manifest>
+																					<!--添加classpath-->
+                                                  <addClasspath>true</addClasspath>
+																									<!--classpath前缀-->
+                                                  <classpathPrefix>lib/</classpathPrefix>
+																									<!--主类-->
+                                                  <mainClass>com.myspring.Hello</mainClass>
+                                          </manifest>
+                                  </archive>
+                          </configuration>
+                  </plugin>
+									<!--依赖管理-->
+                  <plugin>
+                          <groupId>org.apache.maven.plugins</groupId>
+                          <artifactId>maven-dependency-plugin</artifactId>
+													<!--执行动作-->
+                          <executions>
+                                  <execution>
+																					<!--每个execution唯一标识-->
+                                          <id>copy-dependencies</id>
+																					<!--执行动作阶段-->
+                                          <phase>package</phase>
+																					<!--目标-->
+                                          <goals>
+                                                  <goal>copy-dependencies</goal>
+                                          </goals>
+                                                <configuration>
+																									<!--输出文件-->
+                                                        <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                                                </configuration>
+                                  </execution>
+                          </executions>
+                  </plugin>
+          </plugins>
+ <!--外部资源，设置文件(.xml .property)，图片等-->
+  <resources>
+          <resource>
+                  <directory>src/main/java</directory>
+                  <includes>
+                          <include>**/*.xml</include>
+                  </includes>
+									<!--过滤-->
+                  <filtering>true</filtering>
+          </resource>
+  </resources>
+  </build>
+	</code>
+五.maven项目tomcat中java.NullPointerException
+	tomcat兼容问题，更新tomcat。

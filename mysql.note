@@ -128,3 +128,8 @@ maridb 笔记
 	</code>
 		用jdbc的getString或getInt只能获取第一个id,也就是table1.id，如果想获取table2.id就不能用getString("id")了而是要用getString(2)。
 		结论：getString和getInt两个函数不只能用列名做参数，而且能用数字作为参数。但数字必须和sql语句的顺序相关。
+		(2).另一个mysql原生办法
+		<code>
+			String sql = "select table1.id as table1_id,table2.id ad table2_id from table1,table2";
+		</code>
+		as 关键词
