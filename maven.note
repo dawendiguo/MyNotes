@@ -99,5 +99,134 @@
   </resources>
   </build>
 	</code>
+	//重要的事情说三遍：plugins不能放在pluginManager中pluginManager中不能运行dependency插件.
+plugins不能放在pluginManager中.
+plugins不能放在pluginManager中.
+plugins不能放在pluginManager中.
 五.maven项目tomcat中java.NullPointerException
 	tomcat兼容问题，更新tomcat。
+六.maven中引入hibernate项目。
+	（1）建立一个简单项目。
+	 (2) 修改pom.xml文件引入依赖，打包依赖关系，见第四小节。
+	 		<code>
+				<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+				<dependency>
+				    <groupId>org.hibernate</groupId>
+						<artifactId>hibernate-core</artifactId>
+						<version>5.4.0.Final</version>
+			  </dependency>
+			</code>
+	 (3) src/main/java中配置文件hibernate.cfg.xml
+	 <code>
+			<?xml version="1.0" encoding="utf-8"?>
+<!--这里dtd引用地址不是官方教程那个，那个地址无效-->
+<!DOCTYPE hibernate-configuration PUBLIC
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://hibernate.sourceforge.org/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+        <session-factory>
+                <property name = "hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+                <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+                <property name="hibernate.connection.url">jdbc:mysql://127.0.0.1/数据库名字</property>
+                <property name="hibernate.connection.username">用户名</property>
+                <property name="hibernate.connection.password">密码</property>
+								<!--mapping 引用文件-->
+                <mapping resource="Employee.hbm.xml"></mapping>
+                </session-factory>
+</hibernate-configuration>
+	 </code>
+	Employee.hbm.xml文件:
+<code>
+	<?xml version="1.0" encoding="UTF-8"?>
+<!--同样的引用地址要更改-->
+<!DOCTYPE hibernate-mapping PUBLIC
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://hibernate.sourceforge.org/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+		<!--这里类各要加上包名字-->
+    <class name="com.myspring.Employee" table="你的表名称">       
+    <id name="id" type="int" column="id">
+								<!--自动增加-->
+                <generator class="native"></generator>
+        </id>
+        <property name="name" type="string" column="name"></property>
+        <property name="password" type="string" column="password"></property>
+        </class>
+</hibernate-mapping>
+</code>
+以上两人文件写好后可用浏览器打开看看有没有语法问题。
+（4）.写程序测试能不能连接上数据库。
+		Employee.java:
+		<code>
+		package com.myspring;
+
+public class Employee{
+    private int id;
+    private String name;
+    private String password;
+
+    public Employee(){}
+    public Employee(String name,String password){
+        this.name = name;
+        this.password = password;
+    }
+
+    public int getId(){return id;};
+    public void setId(int s){id = s;};
+    public String getName(){return name;}
+    public void setName(String s){ name = s;}
+    public String getPassword(){return password;}
+    public void setPassword(String s){password = s;}
+}	
+		</code>
+		Test.java:
+		<code>
+		package com.myspring;
+
+import java.util.List;
+import java.util.Date;
+import java.util.Iterator;
+
+import org.hibernate.*;
+//用于读取配置文件
+import org.hibernate.cfg.Configuration;
+
+public class Test{
+		//session容器
+    private static SessionFactory factory;
+    public static void main(String[] args){
+        try{
+            factory = new Configuration().configure().buildSessionFactory();
+        }catch(Throwable ex){System.out.println("Failed to create sessionFactory object."+ ex);
+    }
+    Test me = new Test();
+    me.listEmployees();
+    }
+
+    public void listEmployees(){
+				//建立session类
+        Session session = factory.openSession();
+				//事务
+        Transaction tx = null;
+        try{
+						//开启事务
+            tx = session.beginTransaction();
+						//查询
+            List employees = session.createQuery("From Employee").list();
+						//遍历结果
+            for(Iterator iterator = employees.iterator();iterator.hasNext();){
+                Employee employee = (Employee)iterator.next(); System.out.println("Name:"+employee.getName());
+                System.out.println("Password:"+employee.getPassword());
+            }
+            tx.commit();
+        }catch(HibernateException e){
+            if(tx != null)  tx.rollback();
+            e.printStackTrace();
+        }finally{
+            session.close();
+        }
+    }
+}
+		</code>
+到这里就可以编译测试了.
