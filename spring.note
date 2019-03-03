@@ -1,0 +1,120 @@
+(一)SpringBoot 实例
+	要求:maven3.2+ , jdk1.8+。maven中jdk版本设置详见maven学习笔记。
+	建立新项目:
+	<code>
+		mvn archetype:generate -DgroupId=com.myspring -DartifactId=springBoot -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.0				
+	这里用模板1.0版本。因为不使用maven默认编译打包插件自己指定插件使用。
+pom.xml:
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.myspring</groupId>
+  <artifactId>springBoot</artifactId>
+  <version>1.0</version>
+  <package>war</package>
+
+  <name>springBoot</name>
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.example.com</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+  </properties>
+  <parent>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-parent</artifactId>
+          <version>2.1.3.RELEASE</version>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+                <version>2.1.2.RELEASE</version>
+                </dependency>
+
+  </dependencies>
+
+  <build>
+      <plugins>
+                  <plugin>
+                          <groupId>org.springframework.boot</groupId>
+                          <artifactId>spring-boot-maven-plugin</artifactId>
+                          <configuration>
+                                  <mainClass>com.myspring.Application</mainClass>
+                          </configuration>
+                          <executions>
+                                  <execution>
+                                          <goals>
+                                                  <goal>repackage</goal>
+                                          </goals>
+                                  </execution>
+                          </executions>
+                  </plugin>
+      </plugins>
+  </build>
+</project>
+其中有依赖，打包方式，插件设置。插件不能放在pluginManager中只能放在plugins中。
+	写映射控制器:
+	package com.myspring;
+
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@RestController
+public class HelloController {
+
+    @RequestMapping("/")
+    public String index() {
+        return "Greetings from Spring Boot!";
+    }
+
+}
+主类和方法:
+package com.myspring;
+
+import java.util.Arrays;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+    @Bean
+    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+        return args -> {
+
+            System.out.println("Let's inspect the beans provided by Spring Boot:");
+
+            String[] beanNames = ctx.getBeanDefinitionNames();
+            Arrays.sort(beanNames);
+            for (String beanName : beanNames) {
+                System.out.println(beanName);
+            }
+
+        };
+    }
+
+}
+	</code>
+完成以上代码就可以直接使用java -jar packageName.jar 运行了。运行成功可以在8080端口访问页面了。

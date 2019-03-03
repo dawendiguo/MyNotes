@@ -230,3 +230,63 @@ public class Test{
 }
 		</code>
 到这里就可以编译测试了.
+(五).maven默认jdk版本设置
+	1.对于单独项目设置,在对应编译插件下面指定source和target标签
+		<file>pom.xml
+		</file>
+		<code>
+				<build>
+ 
+<plugins>
+ 
+<plugin>
+ 
+<groupId>org.apache.maven.plugins</groupId>
+ 
+<artifactId>maven-compiler-plugin</artifactId>
+ 
+<configuration>
+ 
+<source>1.7</source>
+ 
+<target>1.7</target>
+ 
+<encoding>${file_encoding}</encoding>
+ 
+</configuration>
+ 
+</plugin>
+ 
+</plugins>
+ 
+</build>
+		</code>
+	2.全局设定，修改maven软件的conf/settinggs.xml
+  <code>
+<profiles>
+<profile>
+ 
+<id>jdk-1.7</id>
+ 
+<activation>
+ 
+<activeByDefault>true</activeByDefault>
+ 
+<jdk>1.7</jdk>
+ 
+</activation>
+ 
+<properties>
+ 
+<maven.compiler.source>1.7</maven.compiler.source>
+ 
+<maven.compiler.target>1.7</maven.compiler.target>
+ 
+<maven.compiler.compilerVersion>1.7</maven.compiler.compilerVersion>
+ 
+</properties>
+ 
+</profile>
+</profiles>
+</code>
+修改为想要的版本就可以了
