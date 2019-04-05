@@ -1,0 +1,34 @@
+/*学习android遇到的坑
+
+1.通知栏不显示
+	<code>
+			//nomal use age
+			NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+			NotificationCompat.Builder builder = NotificationCompat.Builder(this);
+			builder.setSmallIcon(R.drawable.icon);
+			builder.setContentTitle("Title");
+			builder.setContentText("This is content Text")	//这三项为必要项，以下为一些可选项
+			bulider.setWhen(System.currentTimeMillis());
+			builder.setLargeIcon(BitMapFactory.decodeResource(getResources(),R.drawable.largePic));
+			manager.notify(1,builder.build());
+			<proplem>
+				以上只能用于8.0以下系统，8.0以上google增加setChannelId,更可气的你必须要写两种保证8.0以下能用，必须做一个判断。以下为增加内容。
+				<code>
+					if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+						//8.0 以上
+						String channelId = "0";
+						String channelName = "channelYouName";
+						NotificationChannel channel = new NotificationChannel(channelId,channelName,NotificationManager.IMPORTANCE_HIGH);
+						if(manager != null){
+							manager.createNotificationChannel(channel);
+							builder.setChannelId(channelId);
+							manager.notify(1,builder.build());
+						}
+					}
+					else{
+						//8.0 以下直接弹出notification
+						manager.notify(1,builder.build());
+					}
+				</code>
+			</proplem>
+	</code>
