@@ -1,0 +1,19 @@
+1.error catogory: 3 standared 
+	(1). fatal or Nonfatal
+	(2). related with system or not
+	(3). saved with dump kernel or not 
+	from the 3 aspect get 5 err function
+	a).	err_ret "Nonfatal and related with a system call, return a error number"
+	b). err_sys "Fatal and related with a system call, show message and return terminate"
+	c). err_dump "Fatal and related with a system call, saved with dump core and terminate"
+	d). err_msg "Nofatal and not related with a system call,show message and return"
+	e). err_quit "Fatal and not related with a system call,show message and terminate"
+	A program runing with daemon,log error catogory is same as error catogory but without "dump",so it only hava four log error function a). log_reg b). log_sys c). log_msg d). log_quit
+2. create file.a libary and file.so libary
+	(1).	.a libary create
+			a). gcc -o func.o -c func.c
+			b). ar rsc libfunc.a fun.o
+			c). usage: gcc main.c -o main -static -Lpathtolib -lfunc
+	(2). .so libary create
+		 a). gcc -fPIC -shared -o libfunc.so func.c
+		 b). gcc -c main.c -o main -Lpathtolib -lfunc
