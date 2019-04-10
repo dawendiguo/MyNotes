@@ -32,3 +32,87 @@
 				</code>
 			</proplem>
 	</code>
+2.provider 在androidx 中找不到android.support.v4.content.FileProvider
+	将它改为androidx.core.content.FileProvider
+3.android与网络
+	1).发送http请求。两种方式HTTPURLConnection和OKHttp。HTTPURLConnection是原生的，OKHttp是其他的开源项目，代码量更少。给出方法。
+	a).HTTPURLConnection:
+		<code>
+			public class HttpUtil{	
+			/*异步处理网络请求，无返回参数的原因是行为直接將返回结果作为onFinish函数参数传出，实现异步效果。这里用Tread实现异步。用法new Tread(new Runnable(){逻辑体}).start();开启线程后台处理，出结果后onFinash(result)返回*/
+				public static void sendHTTPRequest(final String address,final HTTPCallbackListener listener){
+				//listener 用于异步返回结果
+				
+				//开启线程处理,并实现Runnable,run方法
+				new Tread(new Runnable(){
+					@Override
+					public void run(){
+						//申明HTTPURLConnection对象
+						HTTPURLConnection connection = null;
+						//会有异常抛出用try-catch
+						try{
+							//將address 实例化为URL对象
+							URL url = new URL(address);
+							//获取连接
+							connection = (HTTPURLConnection) url.openConnection();
+							//设置连接属性
+							connection.setRequestMethod("Get");
+							//超时时间
+							connection.setConnectTimeOut(8000);
+							connection.setReadTimeout(8000);
+							connection.doInput(true);
+							connection.doOutput(true);
+							//从请求获取返回结果,存入steam流
+							InputSteam in = connection.getInputSteam();
+							//转化为bufferReader,方便读取
+							BufferReader reader = new BufferReader(new InputSteamReader(in));
+							//进一步，结果转换为字符串
+						 StringBuildet response = new StringBuilder();
+						 String line;
+						 while((line = reader.readLine()) != null){
+						 	response.append(line);
+						}
+						//回调onFinish通知父进程
+						if(Listener != null)
+							listener.onFinish(response.toString());
+
+						}catch(Exception e){
+							if(listener != null){
+								listener.onError(e);
+						  }
+						}
+						finally{
+							if(connection != null)
+								connection.disconnect();
+						}
+					}
+				}).start();
+				}
+			}
+		</code>
+		b).OKHttp
+		<code>
+					public class HttpUtil{
+							//发送http请求
+							public static void sendOkHttpRequest(String address, okhttp3.Callback callback){
+									OKHttpClient client = new OKHttpClient();
+									Request request = new Request.Builder().url(address).build();
+									//enqueue 方法直接会包含线程，不用自己再开启线程处理
+									client.newCall(request).enqueue(callback);
+							}
+					}
+		</code>
+			HttpUtil使用：
+				<code>
+					HttpUtil.sendOkHttpRequest("http://www.dawendiguo.com",new okhttp3.Callback(){
+										@Override
+											public void onResponse(Call call,Response response) throws IOException{
+												String responseData = response.body().string();
+											}
+										@Override
+											public void onFailure(Call call,IOException e){
+												//error call
+											}
+									});
+				</code>
+得到返回的数据是String型的可以用SAX和XMLParse解析。
