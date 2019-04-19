@@ -32,6 +32,44 @@
 				</code>
 			</proplem>
 	</code>
+	b)  service 中使用Notification
+	<code>
+	// My Service onCreate method
+	public void onCreate(){
+	super.onCreate();
+
+	Log.d("Create:","Service notification");
+
+	//create intent and pendingintent
+	Intent intent = new Intent(this,MainActivity.class);
+	PendingIntent pi = PendingIntent.getActivity(this,0,intent,0);
+
+	//create notification get notificationManager and set notification channel for android o
+	//get system notification manager
+	NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+	//create notification
+	NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+		.setSmallIcon(R.drawable.pic)
+		.setContentTitle("Title")
+		.setContentText("You Notification content")
+		.setWhen(System.currentTimeMillis())
+		.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.largePic))
+		.setContentIntent(pi);
+	//when android >= 8.0	
+	if(Builder.VERSION.SDK_INT >= Builder.VERSION_CODES.O){
+		String channelId = "youId";
+		String channelName = "youName";
+		//create channel
+		NotificationChannel channel = new NotificationChannel(channelId,channelName,NotificationManager.IMPORTANCE_HIGH);							
+		//manager add channel
+		manager.createNotificationchannel(channel);
+		//notification set channel  id
+		builder.setChannelId(channelId);
+	}
+	//show notification in foreground
+	startForeground(1,builder.build());
+	}
+	</code>
 2.provider 在androidx 中找不到android.support.v4.content.FileProvider
 	将它改为androidx.core.content.FileProvider
 3.android与网络
