@@ -17,3 +17,13 @@
 	(2). .so libary create
 		 a). gcc -fPIC -shared -o libfunc.so func.c
 		 b). gcc -c main.c -o main -Lpathtolib -lfunc
+3. cannot open shared object file: No such file or directory
+	Reason:  can't find .so libary  
+	Analyze: pathname not in system search pathname
+	How to fix: 
+	1).  add you file of pathname into "/etc/ld.so.conf"
+	2).  cp you libXXXX.so into /lib64 or /usr/lib64
+	3).  set system variabel LD_LIBRARY_PATH 
+		<code>
+			export  LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/XXX:/XXX/xxx.so
+		</code>
