@@ -27,3 +27,18 @@
 		<code>
 			export  LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/XXX:/XXX/xxx.so
 		</code>
+3. function 'realloc' use
+	archetype  void * realloc( void * ptr , size_t newsize)
+    <code>
+		int main(void){
+				char *ptr;
+				char *name = "just a test";
+				ptr = (char *)malloc(strlen(name)+1);
+				//let ptr equal name
+				strcpy(ptr,name);
+				//realloc ptr
+				realloc(ptr,50);
+				//add some data to ptr
+				strcat(ptr,"something new");
+		}
+	</code>
