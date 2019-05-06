@@ -1,0 +1,92 @@
+1).	Location variable set and get in contrller
+
+	set:		file < laravel home path > /.env
+	get in controller:	env("variable name");
+2). set Route's Controller not in app\Http\Controllers, otherwise in app\http\Controllers\Test\.
+	a). new controller must use App\Http\Controllers\Controller,and extends this Controller
+	<code>
+		<!-- Controller Test -->
+		namespace App\Http\Controllers\Test;
+
+		use Illuminate\Http\Request;
+		use App\Http\Controllers\Controller;
+
+		class TestController extends Controller{
+
+		}
+	</code>
+	b). Route set 
+	<code>
+		<!-- file /route/web.php -->
+		Route::namespace('Test')->group(function(){
+			Route:get('index','TestController@method');
+		});
+	</code>
+3). get form data and show in web
+	1. attention: a). form must have csrf, use csrf_field() add csrf token.
+				  b). form action field use url() function set.
+	A). set route 
+	<code>
+		<!-- file route/web.php -->
+		Route::get('getData','ControllerName@getMethod');
+		Route::post('showData',"ControllerName@showData");
+	</code>
+	B). create Controller
+	<code>	
+		class ControllerName extends Controller{	
+
+				//get data method
+				public function getData(){	
+						return view('form.get');
+				}
+
+				//validate data and show data
+				public function showData(Request $request){
+					//get post data from here,this data is a array 
+					$input = $request->all();
+					//validate input data, if not pass ,go back to getData
+					$this->validate($request,
+									['title'=>'bail|required|max:255',
+									'content' => 'required',
+									]
+									);
+					//pass validate show view
+					return view('form.show)->with('input',$input);
+					/*	attention
+						there must use with('name','value') function,because we transmit is a array not a String .
+						laravel transmit data to view have two method first). "return view('name',['key'=>'value']);", transmit a String to view
+						second). "return view('name')->with('key',$value);", transmit a String or a variable to view (variable can be a array); */
+				}
+		}
+	</code>
+	C). create two view
+	<code>
+		<!-- file resource/views/form/get.blade.php -->
+		<!-- if have errors show errors -->
+		@if(count($errors) > 0)
+			<div class="alert alert-danger">
+				<ul>
+				@foreach($errors->all() as $error)
+				        <li>{{ $error }}</li>
+				</ul>
+				@endforeach
+			</div>
+		@endif
+		<form action="{{ url('testRouteName') }}" method="POST">
+			<span>Title:</span>
+			<input id="title" type="text" name="title">
+			<br>
+			<span>Content</span>
+			<input id="content" type="text" name="content">
+			<br>
+			{{ csrf_field() }}			<!-- must have , if never include this field , form post will error ,laravel can't get data-->
+			<input type="submit" value="提交">
+		</form>
+	</code>
+	<code>
+		<!-- file resource/views/form/show.blade.php -->
+		<span>Title:</span>
+		<p>{{ $input['title'] }}</p>
+		<span>Content:</span>
+		<p>{{ $input['content'] }}</p>
+	</code>
