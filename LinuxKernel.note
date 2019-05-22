@@ -42,3 +42,35 @@
 				strcat(ptr,"something new");
 		}
 	</code>
+4. amazing fork()
+		fork() return twice,first return(0) mean current programe is a child programe.second return(>0) mean current programe is in parent program.
+		<code>
+			pit_t pid ;
+
+			if(pid = fork() < 0)
+				printf("error fork");
+		    else if(pid == fork)
+				if(pid = fork() < 0)
+					printf("error in child fork");
+			    else if(pid == 0)
+					printf("this is in second child programe");
+				else
+					printf("this is in first child programe");
+		    else
+				printf("this is in root programe");
+
+			if(waitpid(pid,NULL,0) != pid)
+				err_sys("waitpid error");
+		</code>
+		pid 返回值有三种大于0（当前进程）、等于0（fork()创建的子进程中)、小于0（内核出错）。
+		交进程希望等待子进程结束后执行代码可以用wait()和waitpid()：
+		<code>
+			if(waitpid(pid,&intNumber,0) != pid)
+				err_sys("waitpid error");
+			//some other code after child programe
+		</code>
+5. 6个exec函数
+	1）区别 execl execv execle execve execlp execvp 其中l(list)和v(vetor)必须要有一个表示参数列表或参数失量。
+	2）另外两个字母 e 表示自己指定环境表不使用系统环境表 。 p 表示在PATH下寻找执行程序文件名，不用指定路径全名。
+6. C语言中.(点)和->(箭头)区别
+	.(点)前面必须是实体的变量或者结构体，而->(箭头)前面是指针。
