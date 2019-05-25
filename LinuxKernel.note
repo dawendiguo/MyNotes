@@ -78,3 +78,31 @@
 7. pause() and alarm() function
 	a). pause() 只有在捕捉信号并从相关function返回后，才能使进程继续执行，对于忽略和内核默认动做的信号不能使程序继续。
 	b). 两个用法1).alarm(int second)--- 一个N秒后送SIGALRM信号的闹钟。2).alarm(0) 如果之前已经设置一个还没有到时间的闹钟，则这个返回剩余的时间，并将程序唯一闹钟时间设置为0，也可以不为0.就重新计时。
+8. setjmp(),longjmp()和goto()区别
+	a). setjmp(),longjmp()可以用于全局跳转。使用：
+		<code>
+			#include <setjmp.h>
+
+			static jmp_buf jmpBuf;
+
+			static void test(){
+					//跳转到setjmp()位置，setjmp()返回值是第二个参数
+					longjmp(jmpBuf,3);
+			}
+
+			int main(){
+					int jmpNum;
+					printf("setjmp 测试\n");
+					//初始化jmp_buf变量
+					if((jmpNum = setjmp(jmpBuf)) == 0)
+					{
+							printf("jmpBuf init ok\n");
+							test();
+					}
+					else{
+							printf("这里是跳转回来的返回值:%d\n",jmpNum);
+					}
+					exit(0);
+			}
+		</code>
+	b). goto只能用于局部跳转不能用于全局。
