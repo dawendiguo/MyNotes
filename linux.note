@@ -44,3 +44,16 @@ cleartrash(){
     [ $confirm == "y" ]||[ $confirm == "Y" ] && /usr/bin/rm -rf ~/.trash/*
 }
 	</code>
+
+4). ssh-agent and ssh-add(ssh domain don't need password,only login in)
+	first.) start ssh-agent
+		<code>
+			<!-- filre " ~homepath/.bashrc " -->
+			eval `ssh-agent'
+			<!-- set private key file -->
+			ssh-add fileToPrivateKey
+		</code>
+	second.) connect to domain
+		<code>
+			ssh -p port user@domain.com				//don't need password
+		</code>
