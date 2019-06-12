@@ -37,6 +37,13 @@ maridb 笔记
 1. 新建数据库{
 	<code>
 	create database|schema databaseName default character set utf8 collate(比较字符集) utf8_general_ci
+	/*添加用户*/
+	insert into mysql.user(Host,User,Password) value ("localhost","userName",PASSWORD("password"));
+	/*用以上方法添加的用户密码直接就是经过加密的*/
+	/*用一下方式添加的用户密码是明文保存*/
+	create user "userName"@"hostName" identified by "password";
+	/*添加限号后需要刷新权限*/
+	flush privileges;
 	</code>
 }
 2. 授权一个数据库给指定用户{
@@ -133,3 +140,13 @@ maridb 笔记
 			String sql = "select table1.id as table1_id,table2.id ad table2_id from table1,table2";
 		</code>
 		as 关键词
+九). mysql 数据库备份、恢复
+	<code>
+		mysqldump -u username -p databaseName > backupFile.sql
+		//之后需要输入密码
+	</code>
+	恢复:
+	<code>
+		a). 进去要恢复表的数据库
+		b). source backupfile.sql;
+	</code>

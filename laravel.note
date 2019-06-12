@@ -90,3 +90,13 @@
 		<span>Content:</span>
 		<p>{{ $input['content'] }}</p>
 	</code>
+4). laraval set config file and route file (web.php <5.8>,routes.php <5.2>),but doesn't work.
+	laracal have a cache system . use artisan command recreate cache file.the cache command:
+	a). php artisan route:cache  -- recreate route cache file 
+	b). php artisan config:cache -- recreate config cache file
+
+	if php artisan route:cache fail. the reason is : doesn't support "Route::get('foo',function(){return "hello";});". only support "Route::get('foo',"Controller@method");"
+	The last artisan list all command :
+	<code>
+		php artisan list
+	</code>
