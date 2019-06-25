@@ -57,3 +57,62 @@ cleartrash(){
 		<code>
 			ssh -p port user@domain.com				//don't need password
 		</code>
+5). vim 插件 dein.vim插件管理删除不使用的插件的方法
+	<code>
+		call map(dein#check_clean(),"delete(v:val,'rf')")
+	</code>
+6). python 升級的坑
+  a) yum 不能使用
+  b) ibus 不能使用
+  以上两种软件都是使用自带的python编绎，所以当python升级之后就不能正常解析了，必须手动找到相应文件更改软件python版本，下面是须要更改的文件：
+  a) /usr/bin/yum 第一行
+  b) /usr/bin/ibus-setup,/usr/libexec/ibus-engine-table等文件中python版本
+7). you complete me 插件安装说明
+ require). vim > 7.4 , vim 支持python3 ， 安装依赖cmake gcc-c++ make python3-devel
+ 1) vim 版本问题是个大问题，直接使用yum安装的vim是不支持python,python3的，而ycmd就是使用python3的。
+    a). 使用第6点安装python3.7 或更高版本。
+    b). 删除机器上的vim，两个方法:yum remove vim*;rpm -qa|grep vim再用rpm -e 分别删除
+    c). 下载github上的vim最新版本
+    d). 编绎：./configure ./configure --with-features=huge \
+            --enable-multibyte \
+            --enable-rubyinterp=yes \
+            --enable-pythoninterp=yes \
+            --with-python-config-dir=/usr/lib/python2.7/config \     /* 你的原python设定 */
+            --enable-python3interp=yes \
+            --with-python3-config-dir=/usr/lib/python3.5/config \  /* 新安装的python设定 ＊/
+            --enable-perlinterp=yes \
+            --enable-luainterp=yes \
+            --enable-gui=gtk2 --enable-cscope \ 
+            --prefix=/usr/local/vim8                              /* 安装位置 */
+
+            这一步就是最容易出问题的,如果有问题可以看看有没有ncurses-devel和python-dev
+     e). make 和 make install
+     f). vim --version|grep python确定下 python 和 python3 前面是不是＋号，如果是－号表示当前vim不支持python或python3
+  problem). 1. vim required python > 2.7 or python > 3.5 有可能是vim不支持python。使用vim --version|grep python查看
+            2. vim --version 错误：找不到python.so.XXX  的共享库。没有把新安装的python加入ld.so.conf。先找到新安装的python.so.XXXX 位置，加入ld.so.conf列表。两个加入方法：直接加入 /etc/ld.so.conf文件；/etc/ld.so.conf.d/中建立python.conf，把先找到的位置加入这个文件。最后必须运行命令：ldconfig注册
+   2).vim 安装插件管理，现使用的是vim-plug。 github克隆下来，.vim放到.vim/autoload下面。
+   .vimrc中加入
+   <code>
+          call plug#begin('~/.vim/plugged')
+          "emmet for wait html"
+          Plug 'mattn/emmet-vim'
+          "Ag search tool
+          Plug 'ervandew/ag'
+          "Taglist for tags
+          Plug 'vim-scripts/taglist.vim'
+          "NERDTree
+          Plug 'scrooloose/nerdtree'
+          "laguage test
+          Plug 'vim-syntastic/syntastic'
+          "You Complete Me
+          Plug 'ycm-core/YouCompleteMe'
+          call plug#end()
+   </code>
+   打开vim,输入命令:PlugInstall安装插件，这个时间有点长，主要是国内网络问题。
+   安装好之后关闭vim，运行下面命令：
+   <code>
+          cd ~/.vim/plugged
+          cd YouCompleteMe
+          python install.py --clangd-impleter --java-impleter --ts-impleter  // 三个选项分别对应支持语言C，JAVA，JAVASCRIPT
+   </code>
+   至此打开vim就可以使用you complete me 插件了.
