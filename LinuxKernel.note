@@ -106,3 +106,23 @@
 			}
 		</code>
 	b). goto只能用于局部跳转不能用于全局。
+8. kdump.service useage:
+  1). install kexec-tools
+      <code>yum install kexec-tools</code>
+  2). set crashKernel 
+      <code>
+      <!--/etc/default/grub-->
+        crashkernel = auto
+      </code>
+  3). restart service
+      <code>systemctl restart kdump.service</code>
+9. core file dbuf process
+  1). set ulimit
+      <code>ulimit -c filesize/unlimited</code>
+  2). complie code with -g
+      <code>gcc -g -o main main.c</code>
+  3). run programe ,get core_file
+      <code>./main</code>
+  4). debuf code with gdb
+      <code>gdb main core_XXXX</code>
+  <Attention>if core file size is 0, make sure ulimit -c is not 0  & you current filesystem is not windows NTFS. if you filesystem is NTFS ,this core_file can't correct make</Attention>
