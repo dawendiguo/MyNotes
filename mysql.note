@@ -156,3 +156,11 @@ maridb 笔记
     </code>
     此提示来自/var/log/mysql/error.log文件
     原因：时间问题，有可能因为时区导致。mariadb.service 打开时间后于当前时间。解决方法更改当前系统时间为后一年时间。再次关闭mariadb.service就可以了。
+十一). mysql 只能用root账号登录，不能使用普通账号登录
+    原因：mysql账号表中plugin字段设置为了auth_socket,表示和本场账号相关。如果不想和本地账号关联要设置为"mysql_native_password".
+    <code>
+          use mysql;
+          update user set plugin = "mysql_native_password" where User = "想更改的用户";
+          flush privileges;       /* 刷新权限 */
+    </code>
+
