@@ -150,3 +150,9 @@ maridb 笔记
 		a). 进去要恢复表的数据库
 		b). source backupfile.sql;
 	</code>
+十). mariadb.service  不能使用systemctl stop mariadb.service 关闭
+    <code>
+        InnoDB: Waiting for page_cleaner to finish flushing of buffer pool
+    </code>
+    此提示来自/var/log/mysql/error.log文件
+    原因：时间问题，有可能因为时区导致。mariadb.service 打开时间后于当前时间。解决方法更改当前系统时间为后一年时间。再次关闭mariadb.service就可以了。
