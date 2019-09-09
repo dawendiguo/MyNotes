@@ -126,3 +126,12 @@
   4). debuf code with gdb
       <code>gdb main core_XXXX</code>
   <Attention>if core file size is 0, make sure ulimit -c is not 0  & you current filesystem is not windows NTFS. if you filesystem is NTFS ,this core_file can't correct make</Attention>
+10. dbm attention
+  1). when you use dbm store compile programe must add " -lgdbm_compat"
+  <code>
+        gcc -g -o main main.c -lgdbm_compat
+  </code>
+  2). dbm's data transport is use structure datum, datum have two filed "dptr"(data)  and "dsize"(sizeOfData). this two filed is very important, when you write into dbm database, or read from it. simple to say, when you write it with 30bytes, you read it must use 30bytes.
+  3). you can only get dbm database use "dbm_fetch(dbm_ptr,key_datum)". the key_datum must be key data when you "dbm_store(dbm_ptr,key_datum,data_datum,DBM_REPLACE)". important say third: read/write sizeOfData must the same. read/write sizeOfData must the same. read/write sizeOfData must the same.
+11. sizeof between strlen
+  1). sizeof can get every thing size.such as , object,ptr,var ...  . it get this use size include '\0'. but strlen not include '\0'.and strlen only use to array. only running can get. but sizeof can get before run programe.

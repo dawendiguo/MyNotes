@@ -30,3 +30,38 @@ github 笔记
 
 三.github忽略文件，不上传一些文件
 	项目下加入.gitignore文件里面加入不想上传的文件
+8). create you github server
+    a). create git user,group
+      <code>
+      useradd -g -M git
+      gourpadd git
+      passwd git
+      </code>
+    b).create ssh keygen
+      <code>
+      ssh-keygen -t rsa
+      cp git.pub authorized_keys
+      </code>
+    c).create directory for git repo
+      <code>
+      mkdir gitrepo
+      chmod 700 gitrepo
+      </code>
+    d).change git passwd file, change HOMEDIR gitrepo directory, change shell /bin/git-shell. so that, user can't user git login system.
+      <code>
+          vi /etc/passwd
+          Eg:
+              git:x:504:504::/home/git/gitRepo/:/bin/git-shell
+      </code>
+      e).create a repo
+      <code>
+            git init --bare test.git
+            chown -R git:git test.git
+      </code>
+      f).now you can use git clone manager codes
+      <code>
+            git clone git@localhost:test.git
+      </code>
+      Some Extension:
+            In github server, ssh server must use port "22", as git client can't set port.
+            In client if you use key-gen you shuld use "ssh-agent" "ssh-add" add the key-gen to ssh-agent. git don't have api set ssh-key-gen
